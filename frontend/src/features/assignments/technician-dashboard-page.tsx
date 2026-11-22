@@ -57,7 +57,7 @@ export function TechnicianDashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {loading ? (
           <StatCardSkeletons count={3} />
-        ) : (
+        ) : loadError ? null : (
           <>
             <StatCard icon={UserCheck} label="Assigned" value={count('Assigned')} />
             <StatCard icon={Loader} label="In Progress" value={count('In Progress')} />

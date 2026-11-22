@@ -81,7 +81,7 @@ export function AdminDashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {loading ? (
           <StatCardSkeletons count={4} />
-        ) : (
+        ) : loadError ? null : (
           <>
             <StatCard icon={FileText} label="Total Reports" value={reports.length} />
             <StatCard icon={Circle} label="Open" value={count('Open')} />

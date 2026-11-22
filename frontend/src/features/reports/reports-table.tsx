@@ -10,6 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { formatDate, formatReportId } from '@/lib/format'
+import { cn } from '@/lib/utils'
 import type { Facility } from '@/features/facilities/types'
 import { PriorityLabel } from '@/features/reports/priority-label'
 import { isReportEditable } from '@/features/reports/rules'
@@ -50,7 +51,7 @@ export function ReportsTable({
 
   return (
     <>
-      <div className="hidden md:block">
+      <div className={showReporter ? 'hidden lg:block' : 'hidden md:block'}>
         <Table>
           <TableHeader>
             <TableRow className="hover:bg-transparent">
@@ -109,7 +110,7 @@ export function ReportsTable({
         </Table>
       </div>
 
-      <ul className="flex flex-col gap-3 md:hidden">
+      <ul className={cn('flex flex-col gap-3', showReporter ? 'lg:hidden' : 'md:hidden')}>
         {reports.map((report) => {
           const facility = facilities.get(report.facility_id)
           return (

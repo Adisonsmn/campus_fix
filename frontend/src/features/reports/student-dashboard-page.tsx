@@ -77,7 +77,7 @@ export function StudentDashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {loading ? (
           <StatCardSkeletons count={3} />
-        ) : (
+        ) : loadError ? null : (
           <>
             <StatCard icon={FileText} label="Total Reports" value={reports?.length ?? 0} />
             <StatCard icon={Loader} label="Active" value={active} />
