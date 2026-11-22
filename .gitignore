@@ -1,6 +1,7 @@
 # Project rules and internal docs (keep local only)
 AGENTS.md
 CLAUDE.md
+PRD.md
 docs/
 
 # AI tooling
@@ -13,6 +14,24 @@ docs/
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+*.ppk
+*.crt
+*.p12
+*.tfstate
+*.tfstate.*
+.aws/
+credentials.json
+secrets.*
+
+# Build output and coverage
+dist/
+dist-ssr/
+build/
+coverage/
+htmlcov/
+.coverage
 
 # Python
 __pycache__/
