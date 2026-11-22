@@ -111,7 +111,7 @@ npm run format:check
 | Foundation | Frontend shell and backend skeleton done                             |
 | Facility   | Full CRUD (API and admin UI) done                                    |
 | Report     | Read endpoints only; create/update/delete and UI pending             |
-| Technician | Pending                                                              |
+| Technician | Full CRUD (API and admin UI) done                                    |
 | Assignment | Pending                                                              |
 | Deployment | Pending                                                              |
 
@@ -132,5 +132,10 @@ Currently available:
 | DELETE | `/api/facilities/{id}`  | Delete a facility   |
 | GET    | `/api/reports`          | List reports        |
 | GET    | `/api/reports/{id}`     | Get a report        |
+| GET    | `/api/technicians`      | List technicians    |
+| POST   | `/api/technicians`      | Create a technician |
+| GET    | `/api/technicians/{id}` | Get a technician    |
+| PUT    | `/api/technicians/{id}` | Update a technician |
+| DELETE | `/api/technicians/{id}` | Delete a technician |
 
 Errors use `404` (not found), `409` (conflict with related data) and `422` (validation).

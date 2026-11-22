@@ -6,12 +6,14 @@ import { AppShell } from '@/components/layout/app-shell'
 import { NotImplemented } from '@/components/shared/not-implemented'
 import { FacilitiesPage } from '@/features/facilities/facilities-page'
 import { RoleSelectionPage } from '@/features/roles/role-selection-page'
+import { TechniciansPage } from '@/features/technicians/technicians-page'
 import { ROLE_LIST } from '@/features/roles/roles'
 
 // Pages that are built, keyed by `<basePath>/<path>`. Everything else renders the
 // temporary NotImplemented placeholder until its slice is built.
 const implementedPages: Record<string, ReactNode> = {
   '/admin/facilities': <FacilitiesPage />,
+  '/admin/technicians': <TechniciansPage />,
 }
 
 const roleRoutes: RouteObject[] = ROLE_LIST.map((config) => ({
