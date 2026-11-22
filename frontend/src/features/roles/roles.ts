@@ -11,6 +11,9 @@ import {
 
 export type Role = 'student' | 'admin' | 'technician'
 
+/** Id of the seeded technician the demo Technician role acts as. Not authentication. */
+export const DEMO_TECHNICIAN_ID = 1
+
 export type NavItem = {
   label: string
   /** Shorter label for the mobile bottom bar. */
@@ -36,7 +39,7 @@ export type RoleConfig = {
   description: string
   basePath: string
   /** Fictional demo persona. Not authentication. */
-  persona: { name: string; subtitle: string; initials: string }
+  persona: { name: string; subtitle: string; initials: string; technicianId?: number }
   nav: NavItem[]
   pages: RolePage[]
 }
@@ -98,7 +101,12 @@ export const ROLES: Record<Role, RoleConfig> = {
     label: 'Technician',
     description: 'See your assigned repairs, start work and record notes.',
     basePath: '/technician',
-    persona: { name: 'Dewi Lestari', subtitle: 'Technician', initials: 'DL' },
+    persona: {
+      name: 'Dewi Lestari',
+      subtitle: 'Technician',
+      initials: 'DL',
+      technicianId: DEMO_TECHNICIAN_ID,
+    },
     nav: [
       { label: 'Dashboard', to: '/technician', icon: LayoutDashboard, end: true },
       {

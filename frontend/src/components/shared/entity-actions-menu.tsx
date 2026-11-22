@@ -1,4 +1,4 @@
-import { Eye, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
+import { Eye, MoreHorizontal, Pencil, Trash2, UserPlus } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -13,6 +13,8 @@ type EntityActionsMenuProps = {
   /** Names the row for assistive technology, e.g. "Lab B103". */
   entityName: string
   onView?: () => void
+  /** Reports only: opens the Assign Technician flow. */
+  onAssign?: () => void
   onEdit?: () => void
   onDelete?: () => void
 }
@@ -20,6 +22,7 @@ type EntityActionsMenuProps = {
 export function EntityActionsMenu({
   entityName,
   onView,
+  onAssign,
   onEdit,
   onDelete,
 }: EntityActionsMenuProps) {
@@ -40,6 +43,12 @@ export function EntityActionsMenu({
           <DropdownMenuItem onSelect={onView}>
             <Eye aria-hidden="true" />
             View details
+          </DropdownMenuItem>
+        ) : null}
+        {onAssign ? (
+          <DropdownMenuItem onSelect={onAssign}>
+            <UserPlus aria-hidden="true" />
+            Assign technician
           </DropdownMenuItem>
         ) : null}
         {onEdit ? (

@@ -29,8 +29,24 @@ class ConflictError(AppError):
     status_code = 409
 
 
+class UnprocessableError(AppError):
+    """A state-dependent content rule failed (e.g. completing without repair notes).
+
+    Rendered in Pydantic's list form so the frontend has one parser for 422.
+    """
+
+    status_code = 422
+
+    def __init__(self, field: str, detail: str) -> None:
+        super().__init__(detail)
+        self.field = field
+
+
 async def _handle_app_error(_: Request, exc: Exception) -> JSONResponse:
     assert isinstance(exc, AppError)
+    if isinstance(exc, UnprocessableError):
+        item = {"loc": ["body", exc.field], "msg": exc.detail, "type": "value_error"}
+        return JSONResponse(status_code=422, content={"detail": [item]})
     return JSONResponse(status_code=exc.status_code, content={"detail": exc.detail})
 
 

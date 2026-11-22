@@ -12,6 +12,10 @@ import { NativeSelect } from '@/components/ui/native-select'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ApiError } from '@/lib/api-client'
 import { formatReportId, pluralize } from '@/lib/format'
+import {
+  AssignmentFormSheet,
+  type AssignmentFormTarget,
+} from '@/features/assignments/assignment-form-sheet'
 import { useFacilities } from '@/features/facilities/hooks'
 import { AdminReportDetailSheet } from '@/features/reports/admin-report-detail-sheet'
 import { AdminReportFormSheet } from '@/features/reports/admin-report-form-sheet'
@@ -33,6 +37,9 @@ export function AdminReportsPage() {
   const [viewTarget, setViewTarget] = useState<Report | null>(null)
   const [editTarget, setEditTarget] = useState<Report | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<Report | null>(null)
+  const [assignTarget, setAssignTarget] = useState<AssignmentFormTarget | null>(null)
+  const assignReport = (report: Report) =>
+    setAssignTarget({ assignment: null, presetReportId: report.id })
 
   const reports = reportsQuery.data
 
@@ -181,6 +188,7 @@ export function AdminReportsPage() {
             facilities={facilityMap}
             showReporter
             onView={setViewTarget}
+            onAssign={assignReport}
             onEdit={setEditTarget}
             onDelete={setDeleteTarget}
           />
@@ -198,11 +206,22 @@ export function AdminReportsPage() {
         onOpenChange={(open) => {
           if (!open) setViewTarget(null)
         }}
+        onAssign={(report) => {
+          setViewTarget(null)
+          assignReport(report)
+        }}
         onEdit={(report) => {
           setViewTarget(null)
           setEditTarget(report)
         }}
         onDelete={setDeleteTarget}
+      />
+
+      <AssignmentFormSheet
+        target={assignTarget}
+        onOpenChange={(open) => {
+          if (!open) setAssignTarget(null)
+        }}
       />
 
       <AdminReportFormSheet

@@ -21,6 +21,7 @@ type ReportsTableProps = {
   /** Admin lists also show priority and reporter. */
   showReporter?: boolean
   onView: (report: Report) => void
+  onAssign?: (report: Report) => void
   onEdit: (report: Report) => void
   onDelete: (report: Report) => void
 }
@@ -30,6 +31,7 @@ export function ReportsTable({
   facilities,
   showReporter = false,
   onView,
+  onAssign,
   onEdit,
   onDelete,
 }: ReportsTableProps) {
@@ -39,6 +41,7 @@ export function ReportsTable({
       <EntityActionsMenu
         entityName={report.title}
         onView={() => onView(report)}
+        onAssign={editable && onAssign ? () => onAssign(report) : undefined}
         onEdit={editable ? () => onEdit(report) : undefined}
         onDelete={editable ? () => onDelete(report) : undefined}
       />

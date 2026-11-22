@@ -5,6 +5,9 @@ import { NotFoundPage } from '@/app/not-found-page'
 import { AppShell } from '@/components/layout/app-shell'
 import { NotImplemented } from '@/components/shared/not-implemented'
 import { FacilitiesPage } from '@/features/facilities/facilities-page'
+import { AdminAssignmentsPage } from '@/features/assignments/admin-assignments-page'
+import { TechnicianAssignmentDetailPage } from '@/features/assignments/technician-assignment-detail-page'
+import { TechnicianMyAssignmentsPage } from '@/features/assignments/technician-my-assignments-page'
 import { AdminReportsPage } from '@/features/reports/admin-reports-page'
 import { StudentMyReportsPage } from '@/features/reports/student-my-reports-page'
 import { StudentReportDetailPage } from '@/features/reports/student-report-detail-page'
@@ -21,6 +24,9 @@ const implementedPages: Record<string, ReactNode> = {
   '/student/reports/:id': <StudentReportDetailPage />,
   '/student/reports/:id/edit': <StudentReportFormPage mode="edit" />,
   '/admin/reports': <AdminReportsPage />,
+  '/admin/assignments': <AdminAssignmentsPage />,
+  '/technician/assignments': <TechnicianMyAssignmentsPage />,
+  '/technician/assignments/:id': <TechnicianAssignmentDetailPage />,
   '/admin/facilities': <FacilitiesPage />,
   '/admin/technicians': <TechniciansPage />,
 }

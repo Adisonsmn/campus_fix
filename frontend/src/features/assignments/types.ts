@@ -17,3 +17,20 @@ export type AssignmentFilters = {
   technician_id?: number
   report_id?: number
 }
+
+export type AssignmentCreatePayload = {
+  report_id: number
+  technician_id: number
+  instructions: string | null
+}
+
+/**
+ * Partial update: send only the fields being changed. `report_id` is immutable and a
+ * `status` is only ever the next lifecycle step.
+ */
+export type AssignmentUpdatePayload = {
+  technician_id?: number
+  instructions?: string | null
+  status?: AssignmentStatus
+  repair_notes?: string | null
+}

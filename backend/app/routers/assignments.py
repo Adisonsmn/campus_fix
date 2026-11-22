@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.schemas import AssignmentOut, AssignmentStatus
+from app.schemas import AssignmentCreate, AssignmentOut, AssignmentStatus, AssignmentUpdate
 from app.services import assignments as service
 
 router = APIRouter(prefix="/assignments", tags=["assignments"])
@@ -15,6 +15,21 @@ def list_assignments(
     return service.list_assignments(status=status, technician_id=technician_id, report_id=report_id)
 
 
+@router.post("", response_model=AssignmentOut, status_code=201)
+def create_assignment(payload: AssignmentCreate):
+    return service.create_assignment(payload)
+
+
 @router.get("/{assignment_id}", response_model=AssignmentOut)
 def get_assignment(assignment_id: int):
     return service.get_assignment(assignment_id)
+
+
+@router.put("/{assignment_id}", response_model=AssignmentOut)
+def update_assignment(assignment_id: int, payload: AssignmentUpdate):
+    return service.update_assignment(assignment_id, payload)
+
+
+@router.delete("/{assignment_id}", status_code=204)
+def delete_assignment(assignment_id: int) -> None:
+    service.delete_assignment(assignment_id)

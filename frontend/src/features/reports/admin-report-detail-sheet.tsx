@@ -1,4 +1,4 @@
-import { Lock, Pencil, Trash2 } from 'lucide-react'
+import { Lock, Pencil, Trash2, UserPlus } from 'lucide-react'
 
 import { StatusBadge } from '@/components/shared/status-badge'
 import { Button } from '@/components/ui/button'
@@ -26,6 +26,7 @@ type AdminReportDetailSheetProps = {
   report: Report | null
   facility: Facility | undefined
   onOpenChange: (open: boolean) => void
+  onAssign: (report: Report) => void
   onEdit: (report: Report) => void
   onDelete: (report: Report) => void
 }
@@ -34,6 +35,7 @@ export function AdminReportDetailSheet({
   report,
   facility,
   onOpenChange,
+  onAssign,
   onEdit,
   onDelete,
 }: AdminReportDetailSheetProps) {
@@ -92,9 +94,13 @@ export function AdminReportDetailSheet({
                     <Trash2 className="size-4" aria-hidden="true" />
                     Delete
                   </Button>
-                  <Button onClick={() => onEdit(report)}>
+                  <Button variant="secondary" onClick={() => onEdit(report)}>
                     <Pencil className="size-4" aria-hidden="true" />
                     Edit
+                  </Button>
+                  <Button onClick={() => onAssign(report)}>
+                    <UserPlus className="size-4" aria-hidden="true" />
+                    Assign technician
                   </Button>
                 </>
               ) : (
