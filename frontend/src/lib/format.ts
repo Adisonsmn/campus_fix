@@ -19,3 +19,8 @@ export function pluralize(count: number, singular: string, plural = `${singular}
 export function parseRouteId(value: string | undefined) {
   return value !== undefined && /^[1-9]\d*$/.test(value) ? Number(value) : null
 }
+
+/** Compact date for dashboard lists, e.g. "20 Nov". */
+export function formatShortDate(iso: string) {
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+}

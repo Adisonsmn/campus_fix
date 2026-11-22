@@ -3,12 +3,14 @@ import { createBrowserRouter, type RouteObject } from 'react-router-dom'
 
 import { NotFoundPage } from '@/app/not-found-page'
 import { AppShell } from '@/components/layout/app-shell'
-import { NotImplemented } from '@/components/shared/not-implemented'
 import { FacilitiesPage } from '@/features/facilities/facilities-page'
 import { AdminAssignmentsPage } from '@/features/assignments/admin-assignments-page'
 import { TechnicianAssignmentDetailPage } from '@/features/assignments/technician-assignment-detail-page'
 import { TechnicianMyAssignmentsPage } from '@/features/assignments/technician-my-assignments-page'
+import { TechnicianDashboardPage } from '@/features/assignments/technician-dashboard-page'
+import { AdminDashboardPage } from '@/features/reports/admin-dashboard-page'
 import { AdminReportsPage } from '@/features/reports/admin-reports-page'
+import { StudentDashboardPage } from '@/features/reports/student-dashboard-page'
 import { StudentMyReportsPage } from '@/features/reports/student-my-reports-page'
 import { StudentReportDetailPage } from '@/features/reports/student-report-detail-page'
 import { StudentReportFormPage } from '@/features/reports/student-report-form-page'
@@ -16,9 +18,11 @@ import { RoleSelectionPage } from '@/features/roles/role-selection-page'
 import { TechniciansPage } from '@/features/technicians/technicians-page'
 import { ROLE_LIST } from '@/features/roles/roles'
 
-// Pages that are built, keyed by `<basePath>/<path>`. Everything else renders the
-// temporary NotImplemented placeholder until its slice is built.
-const implementedPages: Record<string, ReactNode> = {
+// Page element for every entry in `ROLES[...].pages`, keyed by `<basePath>/<path>`.
+const pageElements: Record<string, ReactNode> = {
+  '/student': <StudentDashboardPage />,
+  '/admin': <AdminDashboardPage />,
+  '/technician': <TechnicianDashboardPage />,
   '/student/reports': <StudentMyReportsPage />,
   '/student/reports/new': <StudentReportFormPage mode="create" />,
   '/student/reports/:id': <StudentReportDetailPage />,
@@ -35,9 +39,7 @@ const roleRoutes: RouteObject[] = ROLE_LIST.map((config) => ({
   path: config.basePath,
   element: <AppShell role={config.role} />,
   children: config.pages.map((page) => {
-    const element = implementedPages[
-      page.path ? `${config.basePath}/${page.path}` : config.basePath
-    ] ?? <NotImplemented title={page.title} />
+    const element = pageElements[page.path ? `${config.basePath}/${page.path}` : config.basePath]
     return page.path === '' ? { index: true, element } : { path: page.path, element }
   }),
 }))
