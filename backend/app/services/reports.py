@@ -1,9 +1,10 @@
-"""Read-only report access. Create/update/delete arrive with the Report slice."""
+"""Report CRUD. Status is never client-controlled: it only changes through assignments."""
 
 from app import store
-from app.errors import NotFoundError
-from app.schemas import Priority, ReportStatus
+from app.errors import ConflictError, NotFoundError
+from app.schemas import Priority, ReportIn, ReportStatus
 from app.store import Record
+from app.utils import utc_now_iso
 
 
 def list_reports(
@@ -49,3 +50,55 @@ def get_report(report_id: int) -> Record:
         if report is None:
             raise NotFoundError(f"Report {report_id} does not exist.")
         return dict(report)
+
+
+def _require_facility(facility_id: int) -> None:
+    if facility_id not in store.facilities:
+        raise NotFoundError(f"Facility {facility_id} does not exist.")
+
+
+def _require_editable(report: Record, action: str) -> None:
+    """Reports may only be edited or deleted while Open and not linked to an assignment."""
+    if report["status"] != ReportStatus.OPEN.value:
+        raise ConflictError(
+            f"Report {report['id']} is {report['status']} and can no longer be {action}."
+        )
+    if any(a["report_id"] == report["id"] for a in store.assignments.values()):
+        raise ConflictError(f"Report {report['id']} has an assignment and cannot be {action}.")
+
+
+def create_report(data: ReportIn) -> Record:
+    with store.lock:
+        _require_facility(data.facility_id)
+        now = utc_now_iso()
+        report_id = store.next_id("reports")
+        record: Record = {
+            "id": report_id,
+            **data.model_dump(mode="json"),
+            "status": ReportStatus.OPEN.value,
+            "created_at": now,
+            "updated_at": now,
+        }
+        store.reports[report_id] = record
+        return dict(record)
+
+
+def update_report(report_id: int, data: ReportIn) -> Record:
+    with store.lock:
+        report = store.reports.get(report_id)
+        if report is None:
+            raise NotFoundError(f"Report {report_id} does not exist.")
+        _require_editable(report, "edited")
+        _require_facility(data.facility_id)
+        report.update(data.model_dump(mode="json"))
+        report["updated_at"] = utc_now_iso()
+        return dict(report)
+
+
+def delete_report(report_id: int) -> None:
+    with store.lock:
+        report = store.reports.get(report_id)
+        if report is None:
+            raise NotFoundError(f"Report {report_id} does not exist.")
+        _require_editable(report, "deleted")
+        del store.reports[report_id]

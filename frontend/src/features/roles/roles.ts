@@ -69,6 +69,7 @@ export const ROLES: Record<Role, RoleConfig> = {
       { path: 'reports', title: 'My Reports' },
       { path: 'reports/new', title: 'Report a Facility Issue' },
       { path: 'reports/:id', title: 'Report Detail' },
+      { path: 'reports/:id/edit', title: 'Edit Report' },
     ],
   },
   admin: {

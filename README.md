@@ -110,7 +110,7 @@ npm run format:check
 | ---------- | -------------------------------------------------------------------- |
 | Foundation | Frontend shell and backend skeleton done                             |
 | Facility   | Full CRUD (API and admin UI) done                                    |
-| Report     | Read endpoints only; create/update/delete and UI pending             |
+| Report     | Full CRUD (API, student pages, admin management) done; assigning pending |
 | Technician | Full CRUD (API and admin UI) done                                    |
 | Assignment | Pending                                                              |
 | Deployment | Pending                                                              |
@@ -131,7 +131,12 @@ Currently available:
 | PUT    | `/api/facilities/{id}`  | Update a facility   |
 | DELETE | `/api/facilities/{id}`  | Delete a facility   |
 | GET    | `/api/reports`          | List reports        |
+| POST   | `/api/reports`          | Create a report     |
 | GET    | `/api/reports/{id}`     | Get a report        |
+| PUT    | `/api/reports/{id}`     | Update an Open report |
+| DELETE | `/api/reports/{id}`     | Delete an Open report |
+| GET    | `/api/assignments`      | List assignments (read-only for now) |
+| GET    | `/api/assignments/{id}` | Get an assignment   |
 | GET    | `/api/technicians`      | List technicians    |
 | POST   | `/api/technicians`      | Create a technician |
 | GET    | `/api/technicians/{id}` | Get a technician    |

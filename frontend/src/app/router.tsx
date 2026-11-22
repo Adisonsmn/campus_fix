@@ -5,6 +5,10 @@ import { NotFoundPage } from '@/app/not-found-page'
 import { AppShell } from '@/components/layout/app-shell'
 import { NotImplemented } from '@/components/shared/not-implemented'
 import { FacilitiesPage } from '@/features/facilities/facilities-page'
+import { AdminReportsPage } from '@/features/reports/admin-reports-page'
+import { StudentMyReportsPage } from '@/features/reports/student-my-reports-page'
+import { StudentReportDetailPage } from '@/features/reports/student-report-detail-page'
+import { StudentReportFormPage } from '@/features/reports/student-report-form-page'
 import { RoleSelectionPage } from '@/features/roles/role-selection-page'
 import { TechniciansPage } from '@/features/technicians/technicians-page'
 import { ROLE_LIST } from '@/features/roles/roles'
@@ -12,6 +16,11 @@ import { ROLE_LIST } from '@/features/roles/roles'
 // Pages that are built, keyed by `<basePath>/<path>`. Everything else renders the
 // temporary NotImplemented placeholder until its slice is built.
 const implementedPages: Record<string, ReactNode> = {
+  '/student/reports': <StudentMyReportsPage />,
+  '/student/reports/new': <StudentReportFormPage mode="create" />,
+  '/student/reports/:id': <StudentReportDetailPage />,
+  '/student/reports/:id/edit': <StudentReportFormPage mode="edit" />,
+  '/admin/reports': <AdminReportsPage />,
   '/admin/facilities': <FacilitiesPage />,
   '/admin/technicians': <TechniciansPage />,
 }

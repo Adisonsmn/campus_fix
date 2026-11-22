@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import Settings, load_settings
 from app.errors import register_exception_handlers
-from app.routers import facilities, health, reports, technicians
+from app.routers import assignments, facilities, health, reports, technicians
 
 
 def create_api_router() -> APIRouter:
@@ -12,6 +12,7 @@ def create_api_router() -> APIRouter:
     api.include_router(facilities.router)
     api.include_router(reports.router)
     api.include_router(technicians.router)
+    api.include_router(assignments.router)
     return api
 
 

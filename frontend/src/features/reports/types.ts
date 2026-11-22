@@ -16,6 +16,12 @@ export type Report = {
   updated_at: string
 }
 
+/** Body for create and update. The server controls `id`, `status` and timestamps. */
+export type ReportPayload = Pick<
+  Report,
+  'title' | 'description' | 'facility_id' | 'reporter_name' | 'priority'
+>
+
 export type ReportFilters = {
   q?: string
   status?: ReportStatus
