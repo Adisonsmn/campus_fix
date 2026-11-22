@@ -108,7 +108,7 @@ export function AdminDashboardPage() {
               {needAttention.map((report) => (
                 <li
                   key={report.id}
-                  className="flex flex-wrap items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
+                  className="flex flex-col gap-3 py-3 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between"
                 >
                   <div className="min-w-0">
                     <p className="font-semibold break-words">{report.title}</p>
@@ -120,6 +120,7 @@ export function AdminDashboardPage() {
                   <Button
                     variant="secondary"
                     size="sm"
+                    className="max-sm:w-full"
                     aria-label={`Assign technician to ${report.title}`}
                     onClick={() => setAssignTarget({ assignment: null, presetReportId: report.id })}
                   >
