@@ -4,7 +4,7 @@ CampusFix is a responsive Campus Facility Maintenance System. Students and staff
 facility problems, administrators manage facilities and assign technicians, and
 technicians update repair progress.
 
-> Course project (Cloud Computing, Tugas 9). Work in progress; see [Status](#status).
+> Course project (Cloud Computing, Tugas 9). See [Status](#status).
 
 ## Roles
 
@@ -32,7 +32,7 @@ Facility, Report, Technician, Assignment, with relationships validated in the ba
 | Frontend | React, TypeScript, Vite, Tailwind CSS, shadcn/ui, React Router, TanStack Query, React Hook Form, Zod, Lucide |
 | Backend  | Python, FastAPI, Pydantic, Uvicorn                                                |
 | Data     | Hardcoded in-memory Python dictionaries (**no database**)                         |
-| Deploy   | Frontend on AWS Amplify, backend on AWS EC2                                       |
+| Deploy   | Frontend on Azure Static Web Apps, backend on an Azure VM (Nginx + HTTPS)         |
 
 The frontend talks to the backend over a JSON REST API under `/api`.
 
@@ -45,7 +45,8 @@ frontend/   React app (src/app, src/components, src/features, src/lib)
 
 ## Getting started
 
-Prerequisites: Node.js 20+ and Python 3.11+.
+Prerequisites: Node.js 24 with npm 11.6.2 (newer npm 11 releases reject the lockfile in
+`npm ci`) and Python 3.11+.
 
 ### Backend
 
@@ -96,6 +97,36 @@ npm run build
 npm run format:check
 ```
 
+## Deployment (Azure)
+
+```
+Browser --HTTPS--> Azure Static Web Apps (React build)
+Browser --HTTPS--> Azure VM: Nginx :443 --> Uvicorn 127.0.0.1:8000 (one worker)
+```
+
+**Frontend.** A push to `main` runs the GitHub Actions workflow in `.github/workflows/`,
+which builds `frontend/` with `VITE_API_BASE_URL` set and uploads `frontend/dist`.
+`frontend/public/staticwebapp.config.json` makes deep links fall back to `index.html`.
+The deployment token is stored as a GitHub Actions secret.
+
+**Backend.** Ubuntu VM with Python 3.12 in `backend/.venv`:
+
+- systemd unit `campusfix` runs Uvicorn on `127.0.0.1:8000`
+- `/etc/campusfix.env` sets `CORS_ORIGINS` to the Static Web Apps URL
+- Nginx redirects port 80 to 443 and proxies 443 to Uvicorn
+- Certbot (Let's Encrypt) issues and renews the certificate
+- Network Security Group: 22, 80 and 443 only; port 8000 stays closed
+
+Update the backend on the VM (this resets the data):
+
+```bash
+cd ~/campus_fix && git pull
+backend/.venv/bin/pip install -r backend/requirements.txt
+sudo systemctl restart campusfix
+```
+
+The deployment is a temporary course demo; delete the Azure resource group afterwards.
+
 ## Important notes
 
 - **Data is not persistent.** Every restart or redeploy resets the backend to its seed data.
@@ -106,14 +137,15 @@ npm run format:check
 
 ## Status
 
-| Area       | State                                                                |
-| ---------- | -------------------------------------------------------------------- |
-| Foundation | Frontend shell and backend skeleton done                             |
-| Facility   | Full CRUD (API and admin UI) done                                    |
-| Report     | Full CRUD (API, student pages, admin management) done; assigning pending |
-| Technician | Full CRUD (API and admin UI) done                                    |
-| Assignment | Pending                                                              |
-| Deployment | Pending                                                              |
+| Area       | State                                         |
+| ---------- | --------------------------------------------- |
+| Foundation | Done                                          |
+| Facility   | Full CRUD (API and admin UI)                  |
+| Report     | Full CRUD (API, student pages, admin pages)   |
+| Technician | Full CRUD (API and admin UI)                  |
+| Assignment | Full CRUD (API, admin and technician pages)   |
+| Dashboards | Student, administrator and technician         |
+| Deployment | Azure (Static Web Apps and VM)                |
 
 ## API
 
@@ -135,8 +167,11 @@ Currently available:
 | GET    | `/api/reports/{id}`     | Get a report        |
 | PUT    | `/api/reports/{id}`     | Update an Open report |
 | DELETE | `/api/reports/{id}`     | Delete an Open report |
-| GET    | `/api/assignments`      | List assignments (read-only for now) |
+| GET    | `/api/assignments`      | List assignments    |
+| POST   | `/api/assignments`      | Create an assignment |
 | GET    | `/api/assignments/{id}` | Get an assignment   |
+| PUT    | `/api/assignments/{id}` | Update an assignment |
+| DELETE | `/api/assignments/{id}` | Delete an assignment |
 | GET    | `/api/technicians`      | List technicians    |
 | POST   | `/api/technicians`      | Create a technician |
 | GET    | `/api/technicians/{id}` | Get a technician    |
