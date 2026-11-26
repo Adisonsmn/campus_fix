@@ -24,8 +24,9 @@ jobs:
         working-directory: frontend
         env:
           VITE_API_BASE_URL: https://campusfix.japaneast.cloudapp.azure.com
+        # npm is pinned: newer 11.x releases reject this lockfile as out of sync.
         run: |
-          npm ci
+          npx -y npm@11.6.2 ci
           npm run build
       - name: Deploy
         uses: Azure/static-web-apps-deploy@v1
