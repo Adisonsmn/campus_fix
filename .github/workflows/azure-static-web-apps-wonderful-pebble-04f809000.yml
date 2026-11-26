@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
       # Built here rather than by the deploy action: this pins Node and bakes in the API URL.
       - name: Build frontend
         working-directory: frontend
